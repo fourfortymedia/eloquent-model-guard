@@ -7,8 +7,16 @@
   },
   "autoload": {
     "psr-4": {
-      "Fourfortymedia\\EloquentModelGuard\\": "src/"
+      "Fourfortymedia\\EloquentModelGuard\\": "src/",
+      "Fourfortymedia\\Tests\\": "tests/",
+      "FourFortyMedia\\Tests\\Models\\": "tests/Models"
     }
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.4.4",
+    "phpunit/phpunit": "^8.5.19|^9.5.8",
+    "orchestra/testbench": "^6.29",
+    "nunomaduro/collision": "^5.11"
   },
   "authors": [
     {
@@ -16,5 +24,10 @@
       "email": "truminnd@gmail.com"
     }
   ],
-  "minimum-stability": "stable"
+  "minimum-stability": "stable",
+  "scripts": {
+    "post-autoload-dump": [
+      "@php vendor/bin/testbench package:discover --ansi"
+    ]
+  }
 }

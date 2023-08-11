@@ -1,0 +1,4 @@
+env:
+  - DB_CONNECTION="testing"
+  - DB_USERNAME="root"
+  - DB_PASSWORD="secret"

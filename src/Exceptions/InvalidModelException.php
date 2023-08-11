@@ -1,6 +1,6 @@
 <?php
 
-namespace Fourfortymedia\EloquentModelGuard\Exception;
+namespace Fourfortymedia\EloquentModelGuard\Exceptions;
 
 use Exception;
 
@@ -15,10 +15,11 @@ class InvalidModelException extends Exception{
      * @param int            $code     [optional] The Exception code.
      * @param null|Throwable $previous [optional] The previous throwable used for the exception chaining.
      */
-    public function __construct(protected array $messages = [], int $code = 0, ?Throwable $previous = null)
+    public function __construct(protected array|string $messages, int $code = 0, ?Throwable $previous = null)
     {
-        $class = get_called_class();
-        parent::__construct("Error occurred while validating model [$class]", $code, $previous);
+        $this->messages = is_string($messages) ? [$messages] : $this->messages;
+
+        parent::__construct(is_string($messages) ? $messages : "Error occurred while validating model", $code, $previous);
     }
 
     /**

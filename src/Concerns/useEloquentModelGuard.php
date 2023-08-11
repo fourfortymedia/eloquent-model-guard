@@ -3,10 +3,17 @@
 namespace Fourfortymedia\EloquentModelGuard\Concerns;
 
 
-use Fourfortymedia\EloquentModelGuard\Exception\InvalidModelException;
+use Fourfortymedia\EloquentModelGuard\Attributes\OnCreateRules;
+use Fourfortymedia\EloquentModelGuard\Attributes\OnUpdateRules;
+use Fourfortymedia\EloquentModelGuard\Exceptions\InvalidModelException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use ReflectionClass;
 use Throwable;
 
+/**
+ *
+ */
 trait useEloquentModelGuard{
 
     /**
@@ -16,10 +23,12 @@ trait useEloquentModelGuard{
      */
     protected array $rules = [];
 
+    protected bool $autoValidate = true;
+
     /**
      * @return void
      */
-    protected static function bootedUseEloquentModelGuard(): void
+    protected static function bootUseEloquentModelGuard(): void
     {
         static::updating(function (self $model){
             $model->getModelRules();
@@ -46,6 +55,8 @@ trait useEloquentModelGuard{
         $this->getModelRules();
         // get property rules
         $this->getPropertyRules();
+
+
         if (!is_null($callback)) {
             $rules = $callback($this->rules);
             $this->rules = tap($rules, fn($value) => throw_unless(is_array($value), new InvalidModelException('The validate callback should return an array')));
@@ -83,7 +94,6 @@ trait useEloquentModelGuard{
                 $this->rules[$field] = $rule;
             }
         }
-
         return $this;
     }
 
