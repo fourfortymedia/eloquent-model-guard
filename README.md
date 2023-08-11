@@ -84,6 +84,9 @@ Let's explore some usage examples to demonstrate how to take advantage of the ne
        #[OnCreateRules('required|email')]
        protected string $email;
    }
+   
+   please note that when using it on a sigle property, you may pass and accosiative array with a key that is
+   the same as the property with the value as the rules or pass rules as array or keys
    ```
 
 5. **Custom Rules with Validation:**
