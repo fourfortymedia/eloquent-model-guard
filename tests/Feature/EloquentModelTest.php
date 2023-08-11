@@ -86,7 +86,6 @@ class EloquentModelTest extends \Orchestra\Testbench\TestCase
     public function testBasicTest()
     {
         $mock = Mockery::mock(Item::class);
-        $mock->mockery_getExpectationCount()
         $mock->shouldReceive('validate')->andThrow(InvalidModelException::class);
         $mock->shouldReceive('save')->andReturnUsing(function (Model $model) {
             $model->validate();
