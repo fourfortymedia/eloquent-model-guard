@@ -1,5 +1,5 @@
 <?php
-namespace Fourfortymedia\EloquentModelGuard\Providers;
+namespace FourFortyMedia\EloquentModelGuard\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

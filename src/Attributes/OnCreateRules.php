@@ -1,6 +1,6 @@
 <?php
 
-namespace Fourfortymedia\EloquentModelGuard\Attributes;
+namespace FourFortyMedia\EloquentModelGuard\Attributes;
 
 use Attribute;
 use Illuminate\Support\Arr;

@@ -7,8 +7,8 @@
   },
   "autoload": {
     "psr-4": {
-      "Fourfortymedia\\EloquentModelGuard\\": "src/",
-      "Fourfortymedia\\Tests\\": "tests/",
+      "FourFortyMedia\\EloquentModelGuard\\": "src/",
+      "FourFortyMedia\\Tests\\": "tests/",
       "FourFortyMedia\\Tests\\Models\\": "tests/Models"
     }
   },

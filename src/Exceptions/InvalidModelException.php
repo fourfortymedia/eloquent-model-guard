@@ -1,6 +1,6 @@
 <?php
 
-namespace Fourfortymedia\EloquentModelGuard\Exceptions;
+namespace FourFortyMedia\EloquentModelGuard\Exceptions;
 
 use Exception;
 

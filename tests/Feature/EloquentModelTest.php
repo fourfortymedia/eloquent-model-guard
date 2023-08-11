@@ -1,12 +1,12 @@
 <?php
 
-namespace Fourfortymedia\Tests\Feature;
+namespace FourFortyMedia\Tests\Feature;
 
 
-use Fourfortymedia\EloquentModelGuard\Attributes\OnCreateRules;
-use Fourfortymedia\EloquentModelGuard\Attributes\OnUpdateRules;
-use Fourfortymedia\EloquentModelGuard\Concerns\useEloquentModelGuard;
-use Fourfortymedia\EloquentModelGuard\Exceptions\InvalidModelException;
+use FourFortyMedia\EloquentModelGuard\Attributes\OnCreateRules;
+use FourFortyMedia\EloquentModelGuard\Attributes\OnUpdateRules;
+use FourFortyMedia\EloquentModelGuard\Concerns\useEloquentModelGuard;
+use FourFortyMedia\EloquentModelGuard\Exceptions\InvalidModelException;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Events\Dispatcher as EventsDispatcherContract;
 use Illuminate\Database\Eloquent\Model;

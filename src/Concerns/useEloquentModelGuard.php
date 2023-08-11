@@ -1,11 +1,11 @@
 <?php
 
-namespace Fourfortymedia\EloquentModelGuard\Concerns;
+namespace FourFortyMedia\EloquentModelGuard\Concerns;
 
 
-use Fourfortymedia\EloquentModelGuard\Attributes\OnCreateRules;
-use Fourfortymedia\EloquentModelGuard\Attributes\OnUpdateRules;
-use Fourfortymedia\EloquentModelGuard\Exceptions\InvalidModelException;
+use FourFortyMedia\EloquentModelGuard\Attributes\OnCreateRules;
+use FourFortyMedia\EloquentModelGuard\Attributes\OnUpdateRules;
+use FourFortyMedia\EloquentModelGuard\Exceptions\InvalidModelException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use ReflectionClass;
