@@ -80,6 +80,7 @@ Let's explore some usage examples to demonstrate how to take advantage of the ne
    ```
 
 4. **Using on Model Fields:**
+  Note: When using this on the model attributes, use either `private` or `protected` on those attributes so that they don't interfere with your `attributes`
 
    ```php
    use Illuminate\Database\Eloquent\Validations\OnUpdateRules;
