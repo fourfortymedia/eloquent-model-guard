@@ -111,6 +111,7 @@ trait HasEloquentModelGuard{
         $properties = $class->getProperties();
         foreach ($properties as $property) {
             $class = $useOnCreateRules ? OnCreateRules::class : OnUpdateRules::class;
+
             $attributes = $property->getAttributes($class);
             if (!empty($attributes)) {
                 $propertyName = $property->getName();
@@ -119,7 +120,7 @@ trait HasEloquentModelGuard{
                     if(!Arr::has($rules, $propertyName)){
                         throw new \InvalidArgumentException("Invalid rules used on property $propertyName");
                     }else{
-                        $rules = $rules[$propertyName];
+                        $this->rules[$propertyName][] = $rules[$propertyName];
                     }
                 }elseif(is_string($rules)){
                     $this->rules[$propertyName] =  [$rules];
