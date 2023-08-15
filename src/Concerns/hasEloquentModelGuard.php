@@ -14,7 +14,7 @@ use Throwable;
 /**
  *
  */
-trait useEloquentModelGuard{
+trait hasEloquentModelGuard{
 
     /**
      * Model validation rules
