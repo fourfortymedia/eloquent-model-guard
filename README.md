@@ -31,6 +31,16 @@ The following changes have been made to improve validation in Eloquent models:
 
 The enhancements brought by the **eloquent-model-guard** package greatly enhance data validation for Eloquent models. The introduction of `OnCreateRules` and `OnUpdateRules` attributes allows developers to craft specific validation rules for model creation and updates, respectively. This granularity in validation empowers developers to fine-tune validation for individual models, properties, or attributes, promoting cleaner code organization and more efficient validation logic.
 
+## Installation
+```bash
+ composer require fourfortymedia/eloquent-model-guard
+```
+In your eloquent model, add the following
+```php
+class User extends Model {
+     use \FourFortyMedia\EloquentModelGuard\Concerns\hasEloquentModelGuard;
+}
+```
 ## Examples
 
 Let's explore some usage examples to demonstrate how to take advantage of the new attributes:
