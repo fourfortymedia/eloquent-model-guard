@@ -52,7 +52,8 @@ Let's explore some usage examples to demonstrate how to take advantage of the ne
 
    #[OnCreateRules(['name' => 'required', 'email' => 'required|email'])]
    class User extends Model {
-       // ...
+       #[OnCreateRules(['roles.*' => 'rule1|rule2')]
+       private array $roles = [];
    }
    ```
 
