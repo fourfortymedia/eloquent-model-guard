@@ -38,7 +38,7 @@ The enhancements brought by the **eloquent-model-guard** package greatly enhance
 In your eloquent model, add the following
 ```php
 class User extends Model {
-     use \FourFortyMedia\EloquentModelGuard\Concerns\hasEloquentModelGuard;
+     use \FourFortyMedia\EloquentModelGuard\Concerns\HasEloquentModelGuard;
 }
 ```
 ## Examples
