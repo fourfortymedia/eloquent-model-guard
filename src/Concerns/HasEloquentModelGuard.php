@@ -2,7 +2,6 @@
 
 namespace FourFortyMedia\EloquentModelGuard\Concerns;
 
-
 use FourFortyMedia\EloquentModelGuard\Attributes\OnCreateRules;
 use FourFortyMedia\EloquentModelGuard\Attributes\OnUpdateRules;
 use FourFortyMedia\EloquentModelGuard\Exceptions\InvalidModelException;
@@ -15,7 +14,17 @@ use Throwable;
 /**
  *
  */
-trait HasEloquentModelGuard{
+trait HasEloquentModelGuard
+{
+    /**
+     * @var array
+     */
+    protected array $typeMapping = [
+        'string' => ['string'],
+        'integer' => ['integer'],
+        'boolean' => ['boolean'],
+    ];
+
 
     /**
      * Model validation rules
@@ -31,12 +40,12 @@ trait HasEloquentModelGuard{
      */
     protected static function bootHasEloquentModelGuard(): void
     {
-        static::updating(function (self $model){
+        static::updating(function (self $model) {
             $model->getModelRules();
             $model->getPropertyRules();
             $model->validate();
         });
-        static::creating(function (self $model){
+        static::creating(function (self $model) {
             $model->getModelRules(useOnCreateRules: false);
             $model->getPropertyRules(useOnCreateRules: false);
             $model->validate();
@@ -57,16 +66,17 @@ trait HasEloquentModelGuard{
         // get property rules
         $this->getPropertyRules();
 
-
         if (!is_null($callback)) {
             $rules = $callback($this->rules);
-            $this->rules = tap($rules, fn($value) => throw_unless(is_array($value), new InvalidModelException('The validate callback should return an array')));
-        }
-        else if(!empty($this->rules)){
-            $validator = Validator::make($this->attributesToArray(), $this->rules);
-            if ($validator->fails()) {
-                $rules = $validator->errors()->all();
-                throw new InvalidModelException($rules);
+            $this->rules = tap($rules, fn($value) => throw_unless(is_array($value),
+                new InvalidModelException('The validate callback should return an array')));
+        } else {
+            if (!empty($this->rules)) {
+                $validator = Validator::make($this->attributesToArray(), $this->rules);
+                if ($validator->fails()) {
+                    $rules = $validator->errors()->all();
+                    throw new InvalidModelException($rules);
+                }
             }
         }
 
@@ -90,11 +100,12 @@ trait HasEloquentModelGuard{
             $modelRules = $attributes[0]->newInstance();
 
             $rules = $modelRules->rules;
-            foreach ($rules as $field => $rule){
+            foreach ($rules as $field => $rule) {
 
                 $this->rules[$field] = $rule;
             }
         }
+
         return $this;
     }
 
@@ -109,29 +120,40 @@ trait HasEloquentModelGuard{
     {
         $class = new ReflectionClass($this);
         $properties = $class->getProperties();
-        foreach ($properties as $property) {
-            $class = $useOnCreateRules ? OnCreateRules::class : OnUpdateRules::class;
 
-            $attributes = $property->getAttributes($class);
+        foreach ($properties as $property) {
+            $ruleClass = $useOnCreateRules ? OnCreateRules::class : OnUpdateRules::class;
+            $attributes = $property->getAttributes($ruleClass);
+
             if (!empty($attributes)) {
                 $propertyName = $property->getName();
-                $rules = $attributes[0]->newInstance()->rules;
-                if(is_array($rules) && Arr::isAssoc($rules)){
-                    if(!Arr::has($rules, $propertyName)){
-                        throw new \InvalidArgumentException("Invalid rules used on property $propertyName");
-                    }else{
-                        $this->rules[$propertyName][] = $rules[$propertyName];
-                    }
-                }elseif(is_string($rules)){
-                    $this->rules[$propertyName] =  [$rules];
-                }else{
-                    $this->rules[$propertyName] =  $rules;
-                }
+                $propertyType = $property->getType();
+                $rulesInstance = $attributes[0]->newInstance()->rules;
 
+                if (is_array($rulesInstance) && Arr::isAssoc($rulesInstance) && Arr::has($rulesInstance, $propertyName)) {
+                    if (isset($this->rules[$propertyName]) && is_string($this->rules[$propertyName])) {
+                        $this->rules[$propertyName] = explode('|', $this->rules[$propertyName]);
+                    }
+
+                    if ($propertyType->isBuiltin() && Arr::has($this->typeMapping, $propertyType->getName())) {
+                        $validateValue = Arr::get($this->typeMapping, $propertyType->getName());
+                        $this->rules[$propertyName] = array_merge(
+                            ($propertyType->allowsNull() ? ['nullable'] : []),
+                            $this->rules[$propertyName] ?? [],
+                            $validateValue
+                        );
+                    }
+
+                    $this->rules[$propertyName][] = $rulesInstance[$propertyName];
+                    $this->rules[$propertyName] = array_unique($this->rules[$propertyName]);
+                } elseif (is_string($rulesInstance)) {
+                    $this->rules[$propertyName] = [$rulesInstance];
+                } else {
+                    $this->rules[$propertyName] = $rulesInstance;
+                }
             }
         }
 
         return $this;
     }
-
 }
