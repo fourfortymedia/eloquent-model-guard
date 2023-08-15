@@ -7,6 +7,7 @@ use FourFortyMedia\EloquentModelGuard\Attributes\OnCreateRules;
 use FourFortyMedia\EloquentModelGuard\Attributes\OnUpdateRules;
 use FourFortyMedia\EloquentModelGuard\Exceptions\InvalidModelException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 use ReflectionClass;
 use Throwable;
@@ -28,7 +29,7 @@ trait HasEloquentModelGuard{
     /**
      * @return void
      */
-    protected static function bootUseEloquentModelGuard(): void
+    protected static function bootHasEloquentModelGuard(): void
     {
         static::updating(function (self $model){
             $model->getModelRules();
